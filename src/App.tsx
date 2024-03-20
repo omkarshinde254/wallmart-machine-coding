@@ -43,7 +43,7 @@ function App() {
                 }));
 
                 // console.log("Inp dat:: ", formattedData);
-                setCurrStateArr(formattedData);
+                setCurrStateArr((prev) => formattedData);
             } catch (error) {
                 console.error("Error fetching schedule data:", error);
             }
@@ -149,10 +149,11 @@ function App() {
         setDeleteKey((prev) => [...prev, key]);
     };
 
-    const setCurrentElemState = (idx: number, key: string, value: any) => {
+    const setCurrentElemState = (key: number, scheduleKey: string, value: any) => {
         setCurrStateArr((prevState) => {
             const newState = [...prevState];
-            newState[idx] = { ...newState[idx], [key]: value };
+            const idx = newState.findIndex((item) => item.key === key);
+            newState[idx] = { ...newState[idx], [scheduleKey]: value };
             return newState;
         });
     };
