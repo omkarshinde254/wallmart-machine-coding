@@ -3,6 +3,7 @@ import { Button } from "components/ui/button";
 import RowModel from "components/RowModel";
 import { toast } from "components/ui/use-toast";
 import { nanoid } from "nanoid";
+import { set } from "date-fns";
 
 const locationArr = ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia"];
 const channelArr = ["Channel 1", "Channel 2", "Channel 3", "Channel 4", "Channel 5", "Channel 6"];
@@ -128,8 +129,16 @@ function App() {
 
             if (deleteKey.length > 0) {
                 await deleteSchedules(deleteKey);
+                setDeleteKey([]);
             }
 
+            if (currStateArr.length === 0 && deleteKey.length === 0) {
+                toast({
+                    title: "No changes to save",
+                    description: "No changes to save to DB",
+                });
+                return;
+            }
             toast({
                 title: "Schedules updated successfully",
                 description: "Schedules updated successfully to DB",
