@@ -7,7 +7,7 @@ import { nanoid } from "nanoid";
 const locationArr = ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia"];
 const channelArr = ["Channel 1", "Channel 2", "Channel 3", "Channel 4", "Channel 5", "Channel 6"];
 // const BASE_URL = "http://localhost:3001";
-const BASE_URL = "https://wallmart-machine-coding-backend.vercel.app";
+const BASE_URL = "https://walmart-machine-coding-backend.vercel.app/";
 
 type Schedule = {
     key: string;
