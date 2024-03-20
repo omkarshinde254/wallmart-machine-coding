@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "components/ui/button";
 import RowModel from "components/RowModel";
 import { toast } from "components/ui/use-toast";
+import { nanoid } from "nanoid";
 
 const locationArr = ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia"];
 const channelArr = ["Channel 1", "Channel 2", "Channel 3", "Channel 4", "Channel 5", "Channel 6"];
@@ -9,7 +10,7 @@ const channelArr = ["Channel 1", "Channel 2", "Channel 3", "Channel 4", "Channel
 const BASE_URL = "https://wallmart-machine-coding-backend.vercel.app";
 
 type Schedule = {
-    key: number;
+    key: string;
     startDate: Date | undefined;
     endDate: Date | undefined;
     channel: string;
@@ -18,7 +19,7 @@ type Schedule = {
 
 function App() {
     const [currStateArr, setCurrStateArr] = useState<Schedule[]>([]);
-    const [deleteKey, setDeleteKey] = useState<number[]>([]);
+    const [deleteKey, setDeleteKey] = useState<string[]>([]);
 
     // make a fetch request to the server to get data
     useEffect(() => {
@@ -76,7 +77,7 @@ function App() {
         }
     };
 
-    const deleteSchedules = async (keys: number[]) => {
+    const deleteSchedules = async (keys: string[]) => {
         try {
             const response = await fetch(`${BASE_URL}/api/delete/schedule/`, {
                 method: "POST",
@@ -104,7 +105,7 @@ function App() {
 
     const validateSchedules = (schedules: Schedule[]) => {
         for (let i = 0; i < schedules.length; i++) {
-            if (!schedules[i].startDate || !schedules[i].endDate || schedules[i].channel === "Select Channel" || schedules[i].location === "Select Location") {
+            if (!schedules[i].startDate || !schedules[i].endDate) {
                 return false;
             }
         }
@@ -140,16 +141,16 @@ function App() {
     const onScheduleAdd = () => {
         setCurrStateArr((prev) => [
             ...prev,
-            { key: prev.length, startDate: undefined, endDate: undefined, channel: "Select Channel", location: "Select Location" },
+            { key: nanoid(), startDate: undefined, endDate: undefined, channel: "Select Channel", location: "Select Location" },
         ]);
     };
 
-    const onScheduleRemove = (key: number) => {
+    const onScheduleRemove = (key: string) => {
         setCurrStateArr((prev) => prev.filter((itm) => itm.key !== key));
         setDeleteKey((prev) => [...prev, key]);
     };
 
-    const setCurrentElemState = (key: number, scheduleKey: string, value: any) => {
+    const setCurrentElemState = (key: string, scheduleKey: string, value: any) => {
         setCurrStateArr((prevState) => {
             const newState = [...prevState];
             const idx = newState.findIndex((item) => item.key === key);
@@ -172,7 +173,7 @@ function App() {
             {currStateArr.map((item, idx) => (
                 <RowModel
                     key={item.key}
-                    rowIdx={item.key}
+                    rowKey={item.key}
                     locationArr={locationArr}
                     channelArr={channelArr}
                     startDateInp={item.startDate}

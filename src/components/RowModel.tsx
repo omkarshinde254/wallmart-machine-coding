@@ -15,9 +15,10 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "components/ui/dropdown-menu";
+import { start } from "repl";
 
 type Props = {
-    rowIdx: number;
+    rowKey: string;
     locationArr: string[];
     channelArr: string[];
     startDateInp: Date | undefined;
@@ -25,21 +26,21 @@ type Props = {
     channelInp: string;
     locationInp: string;
     // setCurrStateArr: React.Dispatch<React.SetStateAction<{ startDate: Date; endDate: Date; channel: string; location: string }[]>>;
-    onScheduleRemove: (idx: number) => void;
-    setCurrentElemState: (idx: number, key: string, value: any) => void;
+    onScheduleRemove: (key: string) => void;
+    setCurrentElemState: (key: string, scheduleKey: string, value: any) => void;
 };
 
-const RowModel = ({ rowIdx, locationArr, channelArr, startDateInp, endDateInp, locationInp, channelInp, onScheduleRemove, setCurrentElemState }: Props) => {
+const RowModel = ({ rowKey, locationArr, channelArr, startDateInp, endDateInp, locationInp, channelInp, onScheduleRemove, setCurrentElemState }: Props) => {
     const [startDate, setStartDate] = useState<Date | undefined>(startDateInp);
     const [endDate, setEndDate] = useState<Date | undefined>(endDateInp);
     const [channel, setChannel] = useState(channelInp);
     const [location, setLocation] = useState(locationInp);
 
     useEffect(() => {
-        setCurrentElemState(rowIdx, "startDate", startDate);
-        setCurrentElemState(rowIdx, "endDate", endDate);
-        setCurrentElemState(rowIdx, "channel", channel);
-        setCurrentElemState(rowIdx, "location", location);
+        setCurrentElemState(rowKey, "startDate", startDate);
+        setCurrentElemState(rowKey, "endDate", endDate);
+        setCurrentElemState(rowKey, "channel", channel);
+        setCurrentElemState(rowKey, "location", location);
     }, [startDate, endDate, channel, location]);
 
     const handleStartDateSelect = (date: Date | undefined) => {
@@ -97,7 +98,7 @@ const RowModel = ({ rowIdx, locationArr, channelArr, startDateInp, endDateInp, l
                             </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar mode="single" selected={endDate} onSelect={handleEndDateSelect} initialFocus />
+                            <Calendar mode="single" fromDate={startDate} selected={endDate} onSelect={handleEndDateSelect} initialFocus />
                         </PopoverContent>
                     </Popover>
                 </div>
@@ -163,7 +164,7 @@ const RowModel = ({ rowIdx, locationArr, channelArr, startDateInp, endDateInp, l
                     size="sm"
                     className="mt-8 -ml-14 font-bold text-md"
                     onClick={() => {
-                        onScheduleRemove(rowIdx);
+                        onScheduleRemove(rowKey);
                     }}
                 >
                     -
