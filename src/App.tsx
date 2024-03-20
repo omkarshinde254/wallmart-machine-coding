@@ -157,6 +157,12 @@ function App() {
         });
     };
 
+    const handleClearAll = () => {
+        const currKeys = currStateArr.map((item) => item.key);
+        setCurrStateArr([]);
+        setDeleteKey((prev) => [...prev, ...currKeys]);
+    };
+
     return (
         <>
             <Button variant="link" size="lg" className="text-blue-600 underline" onClick={onScheduleAdd}>
@@ -183,14 +189,7 @@ function App() {
                     Save
                 </Button>
 
-                <Button
-                    variant="outline"
-                    size="lg"
-                    className="bg-red-400 ml-2"
-                    onClick={() => {
-                        setCurrStateArr([]);
-                    }}
-                >
+                <Button variant="outline" size="lg" className="bg-red-400 ml-2" onClick={handleClearAll}>
                     Clear All
                 </Button>
             </div>
